@@ -37,7 +37,7 @@ def print_tree(root):
 
     # Compute node widths on last level
     last = levels[-1]
-    widths = [len(str(n.idx)) if n else 1 for n in last]
+    widths = [len(f'[{n.start}:{n.end}]' if hasattr(n, 'start') else str(n.idx)) if n else 1 for n in last]
     total_width = sum(widths) + (len(widths) - 1) * 1  # spaces = 1 between leaves
 
     # For every level, segments = 2^level
@@ -77,7 +77,10 @@ def print_tree(root):
         for i, n in enumerate(nodes):
             if not n:
                 continue
-            s = str(n.idx)
+            if hasattr(n, 'start'):
+                s = f'[{n.start}:{n.end}]'
+            else:
+                s = str(n.idx)
             c = int((i + 0.5) * seg_width)
             start = c - len(s) // 2
             for j, ch in enumerate(s):
